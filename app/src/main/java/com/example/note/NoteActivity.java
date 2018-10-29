@@ -93,7 +93,7 @@ public class NoteActivity extends AppCompatActivity {
         }
     }
 
-    public void alert_save(View view){
+    public void alert_save(final View view){
         final EditText et = new EditText(this);
         et.setText(fileName);
         new AlertDialog.Builder(this).setTitle("请输入笔记名")
@@ -104,9 +104,18 @@ public class NoteActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean mode=false;
                         String newName=et.getText().toString();
+                        if (newName.equals("")){
+                            new AlertDialog.Builder(view.getContext())
+                                    .setMessage("文件名不许为空！")
+                                    .setCancelable(false)
+                                    .setPositiveButton("我知道了", null)
+                                    .show();
+                            return;
+                        }
                         if (newName.equals(""))newName="_NO_SAVE_";
                         if (!newName.equals(fileName)) mode=true;
                         save(newName,note.getText().toString(),mode);
+                        Toast.makeText(view.getContext(),"笔记已保存！",Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("取消",null).show();
     }
